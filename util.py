@@ -28,7 +28,9 @@ CHAR_FREQ = {
         'x': 0.23,
         'j': 0.16,
         'q': 0.12,
-        'z': 0.09
+        'z': 0.09,
+        # Spaces are frequent, so just assume 5
+        ' ': 5
 }
 
 
