@@ -1,4 +1,9 @@
-"""Utilities for the Matasano crypto challenges."""
+"""Utilities for the Matasano crypto challenges.
+
+This has a lot of implementations for challenges that may be reused in other
+challenges.
+"""
+import string
 
 # Character frequency percentages for English from
 # http://norvig.com/mayzner.html
@@ -38,4 +43,23 @@ def xor_ascii(xs, ys):
     # Convert ASCII chars to numbers and xor them, change them back to chars,
     # then construct a new ASCII string from the output.
     return ''.join(chr(ord(x) ^ ord(y)) for x, y in zip(xs, ys))
+
+def single_char_xor_top_string_and_score(ctext):
+    # Given a ciphertext decoded into its ASCII representation, find the
+    # top-scoring plaintext string according to English character frequencies,
+    # assuming a single-character repeated XOR.
+    top_score = 0
+    top_str = ''
+    for key in string.printable:
+        score = 0
+        new_str = ''
+        for char in ctext:
+            new_char = chr(ord(char) ^ ord(key)).lower()
+            new_str += new_char
+            score += CHAR_FREQ.get(new_char, 0)
+
+        if score > top_score:
+            top_score = score
+            top_str = new_str
+    return (top_str, top_score)
 
