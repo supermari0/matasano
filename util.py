@@ -44,6 +44,15 @@ def xor_ascii(xs, ys):
     # then construct a new ASCII string from the output.
     return ''.join(chr(ord(x) ^ ord(y)) for x, y in zip(xs, ys))
 
+def xor_repeating(ptext, key):
+    # Repeating key XOR. Takes two ASCII strings, plaintext and key, and
+    # sequentially XORs the plaintext with the key, returning result as another
+    # ASCII string.
+    expand_len = len(ptext) / len(key) + 1
+    new_key = (key * expand_len)[:len(ptext)]
+    ctext = map(xor_ascii, ptext, new_key)
+    return ''.join(ctext)
+
 def single_char_xor_top_string_and_score(ctext):
     # Given a ciphertext decoded into its ASCII representation, find the
     # top-scoring plaintext string according to English character frequencies,
@@ -62,4 +71,3 @@ def single_char_xor_top_string_and_score(ctext):
             top_score = score
             top_str = new_str
     return (top_str, top_score)
-
