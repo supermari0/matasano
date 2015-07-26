@@ -53,6 +53,27 @@ def xor_repeating(ptext, key):
     ctext = map(xor_ascii, ptext, new_key)
     return ''.join(ctext)
 
+def edit_dist(x, y):
+    # Take two ASCII strings, x and y, and find edit distance (number of
+    # different bits).
+
+    # Alternative: Could just XOR and count the 1s, but this is just as easy.
+
+    # Convert to binary representation. Can't use bin() because it strips
+    # leading 0s.
+    bin_x = ''.join(['{:08b}'.format(ord(x_chr)) for x_chr in x])
+    bin_y = ''.join(['{:08b}'.format(ord(y_chr)) for y_chr in y])
+
+    # Iterate over shortest string
+    diff = 0
+    for i in range(min(len(bin_x), len(bin_y))):
+        if bin_x[i] != bin_y[i]:
+            diff += 1
+
+    # Count bit positions that exist in one but not the other
+    diff += abs(len(bin_x) - len(bin_y))
+    return diff
+
 def single_char_xor_top_string_and_score(ctext):
     # Given a ciphertext decoded into its ASCII representation, find the
     # top-scoring plaintext string according to English character frequencies,
