@@ -75,16 +75,16 @@ def edit_dist(x, y):
     return diff
 
 def single_char_xor_top_string_and_score(ctext):
-    # Given a ciphertext decoded into its ASCII representation, find the
-    # top-scoring plaintext string according to English character frequencies,
-    # assuming a single-character repeated XOR.
+    # Given a ciphertext decoded into its ASCII (or byte) representation, find
+    # the top-scoring plaintext string according to English character
+    # frequencies, assuming a single-character repeated XOR.
     top_score = 0
     top_str = ''
-    for key in string.printable:
+    for key in range(256):
         score = 0
         new_str = ''
         for char in ctext:
-            new_char = chr(ord(char) ^ ord(key)).lower()
+            new_char = chr(ord(char) ^ key).lower()
             new_str += new_char
             score += CHAR_FREQ.get(new_char, 0)
 
