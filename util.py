@@ -44,13 +44,13 @@ def xor_ascii(xs, ys):
     # then construct a new ASCII string from the output.
     return ''.join(chr(ord(x) ^ ord(y)) for x, y in zip(xs, ys))
 
-def xor_repeating(ptext, key):
-    # Repeating key XOR. Takes two ASCII strings, plaintext and key, and
-    # sequentially XORs the plaintext with the key, returning result as another
-    # ASCII string.
-    expand_len = len(ptext) / len(key) + 1
-    new_key = (key * expand_len)[:len(ptext)]
-    ctext = map(xor_ascii, ptext, new_key)
+def xor_repeating(text, key):
+    # Repeating key XOR. Takes two ASCII strings, text (or equivalently,
+    # ciphertext) and key, and sequentially XORs the text with the key,
+    # returning result as another ASCII string.
+    expand_len = len(text) / len(key) + 1
+    new_key = (key * expand_len)[:len(text)]
+    ctext = map(xor_ascii, text, new_key)
     return ''.join(ctext)
 
 def edit_dist(x, y):
@@ -74,21 +74,30 @@ def edit_dist(x, y):
     diff += abs(len(bin_x) - len(bin_y))
     return diff
 
-def single_char_xor_top_string_and_score(ctext):
+def solve_single_char_xor(ctext):
     # Given a ciphertext decoded into its ASCII (or byte) representation, find
     # the top-scoring plaintext string according to English character
     # frequencies, assuming a single-character repeated XOR.
+    #
+    # If ctext is a char array, None is ignored.
+    #
+    # Return (top_string, top_score, top_key)
     top_score = 0
     top_str = ''
+    top_key = ''
     for key in range(256):
         score = 0
         new_str = ''
         for char in ctext:
-            new_char = chr(ord(char) ^ key).lower()
-            new_str += new_char
-            score += CHAR_FREQ.get(new_char, 0)
+            if char is not None:
+                new_char = chr(ord(char) ^ key).lower()
+                new_str += new_char
+                score += CHAR_FREQ.get(new_char, 0)
 
         if score > top_score:
-            top_score = score
             top_str = new_str
-    return (top_str, top_score)
+            top_score = score
+            top_key = key
+
+    top_key = chr(top_key)
+    return (top_str, top_score, top_key)

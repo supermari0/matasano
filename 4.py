@@ -16,7 +16,7 @@ if __name__ == '__main__':
     top_str = ''
     for ctext in list_of_strs:
         ctext_ascii = ctext.decode('hex')
-        (string, score) = single_char_xor_top_string_and_score(ctext_ascii)
+        (string, score, key) = solve_single_char_xor(ctext_ascii)
         if score > top_score:
             top_score = score
             top_str = string
