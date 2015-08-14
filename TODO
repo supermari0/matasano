@@ -1,0 +1,6 @@
+- separate out into packages if this gets big enough, maybe 1 for each set of
+  challenges
+- unit testing for challenge results
+- figure out why you're not getting the result for challenge 6 as the top
+  result (instead, it's like the 3rd one down or something)
+- setup.py with dependencies
